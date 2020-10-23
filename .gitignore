@@ -1,0 +1,5 @@
+# Build gem
+friendly_uuid-*.gem
+
+# Test output
+tmp
