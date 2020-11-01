@@ -57,33 +57,33 @@ problems:
 - Where should `twos.dev/users/a` lead now?
 
 To address this nuance, FriendlyUUID cleverly truncates URLs _past_
-uniqueness. It truncates URLs _as long as the URL remains the eldest of its
-uniqueness siblings_.
+uniqueness. It keeps truncating characters _as long as the URL remains the
+eldest among its collisions_.
 
 In other words, after the above example, `A`'s URL continues to be
 `twos.dev/users/a`, because when its UUID is truncated to `a` it remains the
 _eldest of all records whose UUIDs start with `a`_.
 
 And when `twos.dev/users/a` is accessed, FriendlyUUID knows that the record
-being asked for is the _eldest record that starts with `a`_.
+being asked for is the _eldest record_ that starts with `a`.
 
 With this tweak, records always have the shortest possible URL, their URLs
 never change, and one URL always points to one record—all conventional rules
-about URLs are followed.
+about URLs are followed, and no extra state was stored!
 
 [2]: https://www.w3.org/Provider/Style/URI
 
 #### Disadvantages
 There are two disadvantages to this approach.
 
-As with many stateless algorithms, you pay in machinepower. In this case, the
+1. As with many stateless algorithms, you pay in machinepower. In this case, the
 queries to discover the shortest-possible URL are quite expensive compared to
 O(1) lookups. (The query to discover a record _given_ a URL remains cheap.)
 
-As well, the hard removal of the `A` record in the example above will cause
-`twos.dev/users/a` to point to `B`, rather than to 404 as a user might
-expect. This can be worked around by soft-deleting records rather than
-hard-deleting them.
+2. The hard removal of `A` in the above example will cause `twos.dev/users/a`
+to point to `B`, rather than to 404 as a user might expect. This can be
+worked around by choosing to soft-delete records whenever you would normally
+hard-delete them.
 
 ### Why use UUIDs?
 There are a few of reasons you might want to use UUIDs as primary keys over
@@ -130,16 +130,25 @@ is still considered a valid "shortening" of itself.
 This will mean that each resource may have multiple valid URLs. FriendlyUUID
 will never change the URL it generates for a given resource, but if you have
 old links floating around in the wild that you want to be canonicalized you
-can optionally decide to forward each valid URL to the canonically valid one:
+can optionally decide to forward each valid URL to the canonical one:
+
 ```ruby
-FriendlyUUID.configure do |config|
-  config.enforce_shortened = true
+class UsersController < ApplicationController
+  before_action :canonicalize_path, only: [:show, :edit]
+
+  # ...
+
+  private
+
+  def canonicalize_path
+    canonical_path = user_path(@user)
+    redirect_to canonical_path if canonical_path != request.fullpath
+  end
 end
 ```
 
-### Why doesn't FriendlyUUID override `id` and `id=` methods?
-`id` and `id=` are sensitive methods to override, as they are used as much by
-Rails internals as by your application.
+Whether or not you take this step, no links will be broken by adding
+FriendlyUUID to your app.
 
 ## Contributing
 See [CONTRIBUTING.md][contributing]

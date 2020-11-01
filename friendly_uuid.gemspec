@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = "friendly_uuid"
-  s.version = "0.1.0"
+  s.version = `git tag --list HEAD | head -n 1`.strip.sub("v", "")
   s.date = "2020-10-11"
   s.summary = "Make UUIDs pretty enough for use in URLs"
   s.description = "FriendlyUUID shortens every UUID to have only as many characters as it needs to be unique."
