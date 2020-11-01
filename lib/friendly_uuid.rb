@@ -63,7 +63,7 @@ module FriendlyUUID
       when "postgresql"
         "LEFT(#{self.table_name}.id::text, ?) = ?"
       when "sqlite3"
-        "SUBSTR(#{self.table_name}?.id, 0, ?) = ?"
+        "SUBSTR(#{self.table_name}.id, 0, ?) = ?"
       else
         raise ValueError("Unknown database type; FriendlyUUID cannot support it")
       end
