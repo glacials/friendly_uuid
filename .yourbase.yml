@@ -1,6 +1,5 @@
 dependencies:
   build:
-    - node:12.19.0
     - ruby:2.7.2
 
 build_targets:
@@ -8,6 +7,10 @@ build_targets:
     commands:
       - gem build friendly_uuid
       - gem install ./friendly_uuid-*.gem
+  - name: release
+    commands:
+      - gem install bundler
+      - bash release.sh
 
 exec:
   environment:
@@ -16,3 +19,6 @@ ci:
   builds:
     - name: default
       build_target: default
+    - name: release
+      build_target: release
+      when: tagged IS true
