@@ -8,43 +8,6 @@ build_targets:
     commands:
       - gem build friendly_uuid
       - gem install ./friendly_uuid-*.gem
-  - name: test
-    build_after:
-      - default
-    commands:
-      - cd tmp/integration
-      - bundle update friendly_uuid
-      - rails db:migrate RAILS_ENV=test # Needed for rails test step
-      - rails test
-    dependencies:
-      containers:
-        postgres:
-          label: postgres
-          image: postgres:latest
-          environment:
-            - POSTGRES_USER=postgres
-            - POSTGRES_PASSWORD=postgres
-            - POSTGRES_DB=postgres
-    environment:
-      - DATABASE_URL=postgres://postgres:postgres@{{.Containers.IP "postgres"}}/postgres # Needed by Rails
-  - name: init
-    build_after:
-      - default
-    commands:
-      - apt-get update # Needed for apt-get install step
-      - rm -rf tmp
-      - mkdir -p tmp
-      - gem install rails # Needed by rails new step
-      - rails new tmp/integration --skip-bundle --skip-webpack-install --database=postgresql
-      - cd tmp/integration
-      - sed -i "s/gem 'sqlite3'.*/gem 'sqlite3'/" Gemfile # Needed on WSL2 machines
-      - sed -i "$ a gem 'friendly_uuid', 'path' => '../../'" Gemfile # TODO: Replace with bundle add
-      - sed -i "s/end/  include FriendlyUUID\\nend/" app/models/application_record.rb
-      - bundle install
-      - npm install -g yarn # Needed for yarn install step
-      - rails webpacker:install
-      - yarn install --check-files
-      - rails generate scaffold User name:string --primary-key-type=uuid
 
 exec:
   environment:
