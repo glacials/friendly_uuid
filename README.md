@@ -80,9 +80,9 @@ There are two disadvantages to this approach.
 queries to discover the shortest-possible URL are quite expensive compared to
 O(1) lookups. (The query to discover a record _given_ a URL remains cheap.)
 
-2. The hard removal of `A` in the above example will cause `twos.dev/users/a`
-to point to `B`, rather than to 404 as a user might expect. This can be
-worked around by choosing to soft-delete records whenever you would normally
+2. Deleting record `A` in the above example will cause `twos.dev/users/a` to
+point to `B`, rather than to 404 as a user might expect. You can work around
+this by choosing to soft-delete records whenever you would normally
 hard-delete them.
 
 ### Why use UUIDs?
