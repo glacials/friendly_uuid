@@ -125,12 +125,13 @@ on any previous request's state.
 ### What if I am already serving production traffic with full UUIDs in URLs?
 Existing links that use full UUIDs will not be broken. Because of the
 algorithm FriendlyUUID uses to lengthen shortened UUIDs, a full-length UUID
-is still considered a valid "shortening" of itself.
+is still considered a valid shortening of itself.
 
-This will mean that each resource may have multiple valid URLs. FriendlyUUID
-will never change the URL it generates for a given resource, but if you have
-old links floating around in the wild that you want to be canonicalized you
-can optionally decide to forward each valid URL to the canonical one:
+This means that after installing FriendlyUUID, each resource may have
+multiple valid URLs. Rails URL helpers will behave correctly and always
+return the same canonical short URL, but if there are full-form links in the
+wild (like on Twitter) that you want to be canonicalized you can optionally
+decide to forward them:
 
 ```ruby
 class UsersController < ApplicationController
