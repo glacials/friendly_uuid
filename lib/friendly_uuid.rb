@@ -20,12 +20,26 @@ module FriendlyUUID
   end
 
   module Class
-    def find(id)
-      super(self.expand(id))
+    def find(*ids)
+      super(self.expand(ids))
     end
 
     def expand(short_uuid)
-      self.expand_to_record(short_uuid).id
+      # If a single ID passed as a string
+      return self.expand_to_record(short_uuid).id if short_uuid.class == String
+
+      # If a single ID passed as a non-nested array
+      if short_uuid[0].class != Array && short_uuid.length == 1
+        return self.expand_to_record(short_uuid.join).id
+      end
+
+      short_uuid.flatten!
+
+      ids = []
+      (0..(short_uuid.length - 1)).each do |length|
+        ids << self.expand_to_record(short_uuid[length]).id
+      end
+      ids
     end
 
     def compact(uuid)
