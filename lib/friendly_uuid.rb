@@ -24,22 +24,20 @@ module FriendlyUUID
       super(self.expand(ids))
     end
 
-    def expand(short_uuid)
+    def expand(short_uuids)
       # If a single ID passed as a string
-      return self.expand_to_record(short_uuid).id if short_uuid.class == String
+      return self.expand_to_record(short_uuids).id if short_uuids.class == String
 
       # If a single ID passed as a non-nested array
-      if short_uuid[0].class != Array && short_uuid.length == 1
-        return self.expand_to_record(short_uuid.join).id
+      if short_uuids[0].class != Array && short_uuids.length == 1
+        return self.expand_to_record(short_uuids.join).id
       end
 
-      short_uuid.flatten!
+      short_uuids.flatten!
 
-      ids = []
-      (0..(short_uuid.length - 1)).each do |length|
-        ids << self.expand_to_record(short_uuid[length]).id
+      short_uuids.map do |uuid|
+        self.expand_to_record(uuid).id
       end
-      ids
     end
 
     def compact(uuid)
