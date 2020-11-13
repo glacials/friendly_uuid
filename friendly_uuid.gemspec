@@ -3,7 +3,17 @@ Gem::Specification.new do |s|
   s.version = `git tag --list --contains HEAD | head -n 1`.strip.sub("v", "")
   s.date = "2020-10-11"
   s.summary = "Make UUIDs pretty enough for use in URLs"
-  s.description = "FriendlyUUID shortens every UUID to have only as many characters as it needs to be unique."
+  s.description = <<-EOF
+    FriendlyUUID is a Rails gem that shortens your UUID records' URLs.
+
+    What once was 758d633c-61d4-4dfc-ba52-b7b498971097 becomes 758d.
+
+    FriendlyUUID does not introduce any new state to your models, even under the hood.
+
+    FriendlyUUID URLs are exactly as unique as they need to be. The first record will be one character. Would-be collisions expand to two characters, and so on.
+
+    FriendlyUUID is inspired by friendly_id, but is focused on being lightweight and specific to models with UUID primary keys.
+  EOF
   s.authors = ["Ben Carlsson"]
   s.email = "qhiiyr@gmail.com"
   s.files = ["lib/friendly_uuid.rb"]
