@@ -155,3 +155,5 @@ FriendlyUUID to your app.
 See [CONTRIBUTING.md][contributing]
 
 [contributing]: https://github.com/glacials/friendly_uuid/blob/main/CONTRIBUTING.md
+
+<img src="https://static.scarf.sh/a.png?x-pxid=059b1617-a430-4455-9e98-89168ea4aef6" />
