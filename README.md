@@ -2,11 +2,11 @@
 FriendlyUUID is a Rails gem that shortens your UUID records' URLs.
 
 What once was
-```http
+```
 twos.dev/users/758d633c-61d4-4dfc-ba52-b7b498971097
 ```
 becomes
-```http
+```
 twos.dev/users/758d
 ```
 
