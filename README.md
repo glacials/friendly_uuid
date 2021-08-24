@@ -77,9 +77,9 @@ problems:
 - `A`'s URL has changed! But _[cool URLs don't change][2]_.
 - Where should `twos.dev/users/a` lead now?
 
-To address this nuance, FriendlyUUID cleverly truncates URLs _past_
-uniqueness. It keeps truncating characters _as long as the URL remains the
-eldest among its collisions_.
+To address this nuance, FriendlyUUID truncates URLs _past_ uniqueness.
+It keeps truncating characters _as long as the URL remains the eldest among
+its collisions_.
 
 In other words, after the above example, `A`'s URL continues to be
 `twos.dev/users/a`, because when its UUID is truncated to `a` it remains the
