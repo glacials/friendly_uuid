@@ -69,7 +69,7 @@ module FriendlyUUID
     end
 
     def substr_query
-      case self.connection_config[:adapter]
+      case adapter
       when "mysql2"
         raise ValueError("Sorry, FriendlyUUID does not support MySQL")
       when "postgresql"
@@ -78,6 +78,14 @@ module FriendlyUUID
         "SUBSTR(#{self.table_name}.id, 0, ?) = ?"
       else
         raise ValueError("Unknown database type; FriendlyUUID cannot support it")
+      end
+    end
+
+    def adapter
+      if respond_to?(:connection_db_config)
+        connection_db_config.configuration_hash[:adapter]
+      else
+        connection_config[:adapter]
       end
     end
   end
