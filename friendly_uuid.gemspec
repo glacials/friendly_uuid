@@ -15,8 +15,8 @@ Gem::Specification.new do |s|
     FriendlyUUID is inspired by friendly_id, but is focused on being lightweight and specific to models with UUID primary keys.
   EOF
   s.authors = ["Ben Carlsson"]
-  s.email = "qhiiyr@gmail.com"
+  s.email = "ben@twos.dev"
   s.files = ["lib/friendly_uuid.rb"]
   s.homepage = "https://github.com/glacials/friendly_uuid"
-  s.license = "MIT"
+  s.licenses = ["CC-BY-NC-SA-4.0", "LicenseRef-Licenseland"]
 end
