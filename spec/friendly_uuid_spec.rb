@@ -56,9 +56,27 @@ RSpec.describe FriendlyUUID do
       expect(found_item).to be_kind_of Array
       expect(found_item.length).to eq 2
     end
+
+    it 'raises ActiveRecord::RecordNotFound when passed nil' do
+      expect do
+        Item.find(nil)
+      end.to raise_error(ActiveRecord::RecordNotFound)
+    end
+
+    it 'raises ActiveRecord::RecordNotFound when passed an array of nil' do
+      expect do
+        Item.find([nil])
+      end.to raise_error(ActiveRecord::RecordNotFound)
+    end
+
+    it 'raises ActiveRecord::RecordNotFound when passed an empty array' do
+      expect do
+        Item.find([])
+      end.to raise_error(ActiveRecord::RecordNotFound)
+    end
   end
 
-  describe '#find_by' do
+  describe '.find_by' do
     it 'returns an object when passed a shortened ID' do
       found_item = Item.find_by(id: Item.compact(item_1.id))
 

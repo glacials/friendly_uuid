@@ -21,7 +21,9 @@ module FriendlyUUID
 
   module Class
     def find(*ids)
-      super(self.expand(ids))
+      ids = self.expand(ids) if ids.flatten.any? { |id| id.present? }
+
+      super(ids)
     end
 
     def expand(short_uuids)
