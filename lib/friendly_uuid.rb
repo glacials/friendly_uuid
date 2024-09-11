@@ -25,18 +25,15 @@ module FriendlyUUID
     end
 
     def expand(short_uuids)
-      # If a single ID passed as a string
-      return self.expand_to_record(short_uuids).id if short_uuids.class == String
-
-      # If a single ID passed as a non-nested array
-      if short_uuids[0].class != Array && short_uuids.length == 1
-        return self.expand_to_record(short_uuids.join).id
-      end
-
-      short_uuids.flatten!
-
-      short_uuids.map do |uuid|
-        self.expand_to_record(uuid).id
+      if short_uuids.is_a?(String)
+        self.expand_to_record(short_uuids).id
+      elsif short_uuids[0].is_a?(String) && short_uuids.length == 1
+        self.expand_to_record(short_uuids.join).id
+      else # When short_uuids is a nested array or a non-nested array with multiple elements
+        short_uuids.flatten!
+        short_uuids.map do |uuid|
+          self.expand_to_record(uuid).id
+        end
       end
     end
 
