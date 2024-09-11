@@ -1,15 +1,10 @@
-require 'active_record'
 require_relative '../lib/friendly_uuid'
 
 RSpec.describe FriendlyUUID do
-  before :all do
-    set_up_database
-  end
+  let(:item_1) { Item.create }
+  let(:item_2) { Item.create }
 
-  let!(:item_1) { Item.create }
-  let!(:item_2) { Item.create }
-
-  describe '#find' do
+  describe '.find' do
     it 'returns an object when passed the original ID' do
       found_item = Item.find(item_1.id)
 
@@ -101,23 +96,6 @@ RSpec.describe FriendlyUUID do
       expect(found_item).to be_kind_of Item
       expect(Array(found_item).length).to eq 1
     end
-  end
-
-  def set_up_database
-    ActiveRecord::Base.establish_connection(
-      host: 'localhost',
-      adapter: 'postgresql',
-      database: 'test'
-    )
-    ActiveRecord::Base.connection.exec_query('CREATE EXTENSION IF NOT EXISTS "uuid-ossp"')
-    ActiveRecord::Base.connection.exec_query('SELECT uuid_generate_v4()')
-    ActiveRecord::Base.connection.exec_query(
-      'CREATE TABLE IF NOT EXISTS items (
-        id uuid DEFAULT uuid_generate_v4 (),
-        created_at TIMESTAMP,
-        PRIMARY KEY (id)
-      )'
-    )
   end
 end
 
