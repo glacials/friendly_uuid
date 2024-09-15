@@ -28,13 +28,13 @@ module FriendlyUUID
 
     def expand(short_uuids)
       if short_uuids.is_a?(String)
-        self.expand_to_record(short_uuids).id
+        self.expand_to_record(short_uuids)&.id
       elsif short_uuids[0].is_a?(String) && short_uuids.length == 1
-        self.expand_to_record(short_uuids.join).id
-      else # When short_uuids is a nested array or a non-nested array with multiple elements
+        self.expand_to_record(short_uuids.join)&.id
+      elsif short_uuids.is_a?(Array)
         short_uuids.flatten!
         short_uuids.map do |uuid|
-          self.expand_to_record(uuid).id
+          self.expand_to_record(uuid.to_s)&.id
         end
       end
     end
@@ -48,10 +48,7 @@ module FriendlyUUID
     end
 
     def expand_to_record(short_uuid)
-      raise ActiveRecord::RecordNotFound unless short_uuid
-      record = self.possible_expansions(short_uuid).first
-      raise ActiveRecord::RecordNotFound unless record
-      record
+      self.possible_expansions(short_uuid).first
     end
 
     def possible_expansions(short_uuid)
