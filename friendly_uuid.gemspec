@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = "friendly_uuid"
-  s.version = `git tag --list --contains HEAD | head -n 1`.strip.sub("v", "")
+  s.version = `git tag --list | tail -n 1`.strip.sub("v", "")
   s.required_ruby_version = "2.7.2"
   s.date = "2020-10-11"
   s.summary = "Make UUIDs pretty enough for use in URLs"
