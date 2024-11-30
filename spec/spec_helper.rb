@@ -120,9 +120,37 @@ def set_up_database
   ActiveRecord::Base.connection.exec_query('CREATE EXTENSION IF NOT EXISTS "uuid-ossp"')
   ActiveRecord::Base.connection.exec_query('SELECT uuid_generate_v4()')
   ActiveRecord::Base.connection.exec_query(
-    'CREATE TABLE IF NOT EXISTS items (
+    'DROP TABLE IF EXISTS items;'
+  )
+  ActiveRecord::Base.connection.exec_query(
+    'DROP TABLE IF EXISTS other_items;'
+  )
+  ActiveRecord::Base.connection.exec_query(
+    'DROP TABLE IF EXISTS sub_items;'
+  )
+  ActiveRecord::Base.connection.exec_query(
+    'CREATE TABLE items (
       id uuid DEFAULT uuid_generate_v4 (),
       created_at TIMESTAMP,
+      updated_at TIMESTAMP,
+      PRIMARY KEY (id)
+    )'
+  )
+  ActiveRecord::Base.connection.exec_query(
+    'CREATE TABLE other_items (
+      id uuid DEFAULT uuid_generate_v4 (),
+      created_at TIMESTAMP,
+      updated_at TIMESTAMP,
+      PRIMARY KEY (id)
+    )'
+  )
+  ActiveRecord::Base.connection.exec_query(
+    'CREATE TABLE sub_items (
+      id uuid DEFAULT uuid_generate_v4 (),
+      item_id uuid NOT NULL,
+      other_item_id uuid NOT NULL,
+      created_at TIMESTAMP,
+      updated_at TIMESTAMP,
       PRIMARY KEY (id)
     )'
   )
