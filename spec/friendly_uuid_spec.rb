@@ -5,6 +5,17 @@ RSpec.describe FriendlyUUID do
   let(:item_2) { Item.create }
 
   describe '.find' do
+    context 'when used with .includes' do
+      let!(:other_item) { OtherItem.create! }
+      let!(:sub_item) { SubItem.create!(item: item_1, other_item: other_item)}
+      
+      it 'works' do
+        found_item = Item.includes(sub_items: [:other_item]).find(item_1.id)
+
+        expect(found_item).to eq item_1
+      end
+    end
+
     it 'returns an object when passed the original ID' do
       found_item = Item.find(item_1.id)
 
@@ -147,4 +158,19 @@ end
 
 class Item < ActiveRecord::Base
   include FriendlyUUID
+
+  has_many :sub_items
+end
+
+class SubItem < ActiveRecord::Base
+  include FriendlyUUID
+
+  belongs_to :item, class_name: 'Item', foreign_key: 'item_id'
+  belongs_to :other_item, class_name: 'OtherItem', foreign_key: 'other_item_id'
+end
+
+class OtherItem < ActiveRecord::Base
+  include FriendlyUUID
+
+  has_many :sub_items
 end
