@@ -25,8 +25,8 @@ FriendlyUUID is inspired by [norman/friendly_id][1], but is focused on being
 lightweight and specific to models with UUID primary keys.
 
 This project is dual-licensed under [Creative Commons BY-NC-SA 4.0][2] and
-[Licenseland][3]. You can choose which to use; in general hobbyists will use
-Creative Commons and commercial users use a paid license through Licenseland.
+[Licenseland][3]. You can choose which to use; in general hobbyists can use
+Creative Commons for free and commercial users use a paid license through Licenseland.
 If you are in education, climate change, or humanitarian efforts feel free to
 email me and I will waive the Licenseland fee.
 
